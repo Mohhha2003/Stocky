@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:project1/features/home/presentation/views/widgets/custom_product_list_item.dart';
 
-class CartScreen extends StatelessWidget {
-  const CartScreen({super.key});
+class MyOrders extends StatelessWidget {
+  const MyOrders({super.key});
 
   @override
   Widget build(BuildContext context) {
