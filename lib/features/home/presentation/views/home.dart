@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:project1/Services/repos/fav_repo.dart';
 import 'package:project1/features/home/data/models/product_model.dart';
 import '../../../../Services/api_con.dart';
 import 'details.dart';
@@ -14,6 +15,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final ApiCon apiCon = ApiCon();
+  @override
+  void initState() {
+    Fav().getUserFavourites(ownerId: '66436148997939ee89ee912f');
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
               future: apiCon.getAllProducts(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const  Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else {
@@ -112,7 +118,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                       fontSize: 14, color: Colors.grey),
                                 ),
                                 const SizedBox(height: 10),
-                                CustomPriceRow(price: product.price),
+                                CustomPriceRow(
+                                  product: product,
+                                  price: product.price,
+                                  productId: product.id,
+                                ),
                               ],
                             ),
                           ),
@@ -136,7 +146,12 @@ class CustomPriceRow extends StatelessWidget {
   const CustomPriceRow({
     Key? key,
     required this.price,
+    required this.productId,
+    required this.product,
   }) : super(key: key);
+
+  final String productId;
+  final ProductModel product;
 
   @override
   Widget build(BuildContext context) {
@@ -152,7 +167,10 @@ class CustomPriceRow extends StatelessWidget {
           ),
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            print('FAvvvv');
+            Fav().addToFavorite(product: product);
+          },
           icon: const Icon(IconlyBroken.heart),
         ),
       ],
