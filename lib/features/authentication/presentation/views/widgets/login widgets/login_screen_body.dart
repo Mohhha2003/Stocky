@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../../../Services/repos/authRepo.dart';
 import '../../../../../../core/utils/app_routes.dart';
 import '../../../../../../core/widgets/app_colors.dart';
 import '../../../../../../core/widgets/custom_my_button.dart';
+import '../../../../../../core/widgets/custom_text_form_feild.dart';
 import '../build_rich_text.dart';
 import '../build_text_next_to_text_button.dart';
 import '../build_two_text_form_field.dart';
-import 'custom_additional_content.dart';
 import 'custom_forget_password.dart';
 
 class LoginScreenBody extends StatefulWidget {
-  const LoginScreenBody({super.key});
+  const LoginScreenBody({Key? key});
 
   @override
   State<LoginScreenBody> createState() => _LoginScreenBodyState();
 }
 
 class _LoginScreenBodyState extends State<LoginScreenBody> {
-  var formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   late TextEditingController emailController;
   late TextEditingController passController;
+
   @override
   void initState() {
     emailController = TextEditingController();
@@ -69,9 +71,27 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                     ),
                     const Gap(40),
                     CustomButton(
-                      onPressed: () {
-                        GoRouter.of(context)
-                            .pushReplacement(AppRoutes.homeView);
+                      onPressed: () async {
+                        if (formKey.currentState!.validate()) {
+                          final email = emailController.text;
+                          final password = passController.text;
+                          try {
+                            final user = await AuthApi().loginUser(
+                              email: email,
+                              password: password,
+                            );
+                            print('User logged in: ${user.email}');
+                            GoRouter.of(context)
+                                .pushReplacement(AppRoutes.homeView);
+                          } catch (e) {
+                            print('Error logging in: $e');
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Failed to login. Please try again.'),
+                              ),
+                            );
+                          }
+                        }
                       },
                       text: 'Login',
                       height: 42,
@@ -84,11 +104,10 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                       fontSize: 20,
                     ),
                     const Gap(10),
-                    const CustomAdditionalContent(),
                     customTextNextToTextButton(
                       context: context,
-                      text: 'Don\'t have account ?',
-                      textButton: 'create account',
+                      text: 'Don\'t have an account ?',
+                      textButton: 'Create Account',
                       onPressed: () {
                         GoRouter.of(context)
                             .pushReplacement(AppRoutes.registerView);

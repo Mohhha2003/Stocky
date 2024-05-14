@@ -100,7 +100,6 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                   CustomButton(
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
-                        // Create a User object from the input fields
                         final user = User(
                           name: nameController.text,
                           email: emailController.text,
