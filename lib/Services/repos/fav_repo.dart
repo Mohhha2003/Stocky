@@ -9,23 +9,16 @@ class Fav {
     dio = Dio();
   }
 
-  Future<List<ProductModel>> addToFavorite(
-      {required ProductModel product}) async {
+  Future<bool> addToFavorite({required ProductModel product}) async {
     try {
       Response response = await dio.post(
           '${ApiConstant.basseUrl}${ApiConstant.favourite}',
           data: product.toJson());
-      List<ProductModel> products = [];
-      if (response.data != null) {
-        products = List<ProductModel>.from(
-          response.data.map((e) => ProductModel.fromJson(e)),
-        );
-      }
-      print(products.length);
-      return products;
+      print(response.data);
+      return true;
     } on Exception catch (e) {
       print('The error in fav is $e');
-      return <ProductModel>[];
+      return false;
     }
   }
 
@@ -33,15 +26,20 @@ class Fav {
       {required String ownerId}) async {
     try {
       Response response = await dio.get(
-          '${ApiConstant.basseUrl}${ApiConstant.favourite}',
-          data: {"ownerId": '66436148997939ee89ee912f'});
+        '${ApiConstant.basseUrl}${ApiConstant.favourite}',
+        queryParameters: {"ownerId": ownerId},
+      );
+
       List<ProductModel> products = [];
-      if (response.data != null) {
+
+      if (response.data != null && response.data is List) {
         products = List<ProductModel>.from(
-          response.data.map((e) => ProductModel.fromJson(e)),
+          (response.data as List)
+              .map((e) => ProductModel.fromJson(e as Map<String, dynamic>)),
         );
       }
-      print(products.length);
+
+      print('This is the fav ${response.data}');
       return products;
     } on Exception catch (e) {
       print('The error is $e');

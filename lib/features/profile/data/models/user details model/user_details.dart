@@ -1,14 +1,19 @@
+import 'package:project1/features/home/data/models/product_model.dart';
+
 class UserDetailsModel {
   final String username;
   final String name;
   final String email;
   final String password;
+  List<ProductModel>?fav;
 
   UserDetailsModel({
     required this.username,
     required this.name,
     required this.email,
-    required this.password, required String id,
+    required this.password,
+    required String id,
+    this.fav
   });
 
   factory UserDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -16,7 +21,8 @@ class UserDetailsModel {
       username: json['username'],
       name: json['name'],
       email: json['email'],
-      password: json['password'], id: '',
+      password: json['password'],
+      id: '',
     );
   }
 
@@ -29,4 +35,3 @@ class UserDetailsModel {
     };
   }
 }
-

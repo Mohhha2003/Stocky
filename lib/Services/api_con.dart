@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:project1/Services/repos/fav_repo.dart';
 import 'package:project1/core/utils/api_constant.dart';
 import 'package:project1/features/home/data/models/product_model.dart';
 
@@ -13,7 +14,8 @@ class ApiCon {
     try {
       Response response = await dio.get('${ApiConstant.basseUrl}/api/products');
       List<ProductModel> products = [];
-    if (response.data != null) {
+
+      if (response.data != null) {
         products = List<ProductModel>.from(
           response.data.map((e) => ProductModel.fromJson(e)),
         );
@@ -24,6 +26,4 @@ class ApiCon {
       return <ProductModel>[];
     }
   }
-
-  
 }

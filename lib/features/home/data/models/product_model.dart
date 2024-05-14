@@ -28,6 +28,10 @@ class ProductModel {
       gender: json['gender'],
       ownerId: json['ownerId']);
 
+  static List<ProductModel> fromJsonList(List<Map<String, dynamic>> jsonList) {
+    return jsonList.map((json) => ProductModel.fromJson(json)).toList();
+  }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['productId'] = id;

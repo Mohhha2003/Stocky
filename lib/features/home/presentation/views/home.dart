@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:project1/Services/repos/cart_repo.dart';
 import 'package:project1/Services/repos/fav_repo.dart';
 import 'package:project1/features/home/data/models/product_model.dart';
 import '../../../../Services/api_con.dart';
@@ -17,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final ApiCon apiCon = ApiCon();
   @override
   void initState() {
-    Fav().getUserFavourites(ownerId: '66436148997939ee89ee912f');
+    CartRepo().getUserCartProduct(owenerId: '66436148997939ee89ee912f');
     super.initState();
   }
 

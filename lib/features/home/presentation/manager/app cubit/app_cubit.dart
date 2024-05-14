@@ -21,4 +21,7 @@ class AppCubit extends Cubit<AppStates> {
     FavScreen(),
     AccountView()
   ];
+  
+
+
 }
