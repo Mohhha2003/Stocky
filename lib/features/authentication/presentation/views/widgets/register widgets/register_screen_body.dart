@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconly/iconly.dart';
+import '../../authModel.dart';
 import '../../../../../../core/utils/app_routes.dart';
 import '../../../../../../core/widgets/app_colors.dart';
 import '../../../../../../core/widgets/custom_my_button.dart';
@@ -12,17 +13,18 @@ import '../build_text_next_to_text_button.dart';
 import '../build_two_text_form_field.dart';
 
 class RegisterScreenBody extends StatefulWidget {
-  const RegisterScreenBody({super.key});
+  const RegisterScreenBody({Key? key});
 
   @override
   State<RegisterScreenBody> createState() => _RegisterScreenBodyState();
 }
 
 class _RegisterScreenBodyState extends State<RegisterScreenBody> {
-  var formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   late TextEditingController emailController;
   late TextEditingController passController;
   late TextEditingController nameController;
+
   @override
   void initState() {
     emailController = TextEditingController();
@@ -40,6 +42,7 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
   }
 
   Timer? timer;
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -66,15 +69,19 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: CustomTextFormField(
-                        isPassword: false,
-                        maxLine: 1,
-                        prefixIcon: IconlyBroken.profile,
-                        controller: nameController,
-                        border: InputBorder.none,
-                        label: 'username',
-                        validate: (value) {
-                          return null;
-                        }),
+                      isPassword: false,
+                      maxLine: 1,
+                      prefixIcon: IconlyBroken.profile,
+                      controller: nameController,
+                      border: InputBorder.none,
+                      label: 'username',
+                      validate: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a username';
+                        }
+                        return null;
+                      },
+                    ),
                   ),
                   const Gap(20),
                   CustomTwoTextFromField(
@@ -91,7 +98,18 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                   const Gap(20),
                   CustomButton(
                     onPressed: () {
-                      GoRouter.of(context).pushReplacement(AppRoutes.homeView);
+                      if (formKey.currentState!.validate()) {
+                        // Create a User object from the input fields
+                        final user = User(
+                          name: nameController.text,
+                          email: emailController.text,
+                          password: passController.text,
+                          image: '',
+                        );
+
+                        print('User registered: $user');
+                        GoRouter.of(context).pushReplacement(AppRoutes.homeView);
+                      }
                     },
                     text: 'Sign Up',
                     height: 42,
@@ -105,13 +123,13 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                   ),
                   const Gap(30),
                   customTextNextToTextButton(
-                      context: context,
-                      text: 'Already have account ?',
-                      textButton: 'Login',
-                      onPressed: () {
-                        GoRouter.of(context)
-                            .pushReplacement(AppRoutes.loginView);
-                      }),
+                    context: context,
+                    text: 'Already have an account?',
+                    textButton: 'Login',
+                    onPressed: () {
+                      GoRouter.of(context).pushReplacement(AppRoutes.loginView);
+                    },
+                  ),
                 ],
               ),
             ),
