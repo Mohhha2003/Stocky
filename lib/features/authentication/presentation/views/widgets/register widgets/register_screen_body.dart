@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconly/iconly.dart';
+import 'package:project1/Services/repos/authRepo.dart';
 import '../../authModel.dart';
 import '../../../../../../core/utils/app_routes.dart';
 import '../../../../../../core/widgets/app_colors.dart';
@@ -97,18 +98,20 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                   const Gap(30),
                   const Gap(20),
                   CustomButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (formKey.currentState!.validate()) {
                         // Create a User object from the input fields
                         final user = User(
                           name: nameController.text,
                           email: emailController.text,
                           password: passController.text,
-                          image: '',
+                          image: 'afjdslkf',
                         );
+                        await AuthApi().registerUser(user: user);
 
-                        print('User registered: $user');
-                        GoRouter.of(context).pushReplacement(AppRoutes.homeView);
+                        print('User registered: ${user.email}');
+                        GoRouter.of(context)
+                            .pushReplacement(AppRoutes.homeView);
                       }
                     },
                     text: 'Sign Up',
@@ -126,7 +129,7 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                     context: context,
                     text: 'Already have an account?',
                     textButton: 'Login',
-                    onPressed: () {
+                    onPressed: () async {
                       GoRouter.of(context).pushReplacement(AppRoutes.loginView);
                     },
                   ),

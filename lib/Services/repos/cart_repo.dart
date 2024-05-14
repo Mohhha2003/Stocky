@@ -20,13 +20,7 @@ class CartRepo {
     }
   }
 
-  addToCart()async { 
-    try{
-
-    }catch (e){
-      
-    }
+  addToCart() async {
+    try {} catch (e) {}
   }
-
-
 }

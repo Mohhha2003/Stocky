@@ -15,14 +15,15 @@ class AuthApi {
         '${ApiConstant.basseUrl}${ApiConstant.register}',
         data: user.toJson(),
       );
-      return User.fromJson(response.data);
+      return User.fromJson(response.data['data']);
     } catch (e) {
       print('Error registering user: $e');
       throw Exception('Failed to register user');
     }
   }
 
-  Future<User> loginUser({required String email, required String password}) async {
+  Future<User> loginUser(
+      {required String email, required String password}) async {
     try {
       Response response = await dio.post(
         '${ApiConstant.basseUrl}${ApiConstant.login}',
@@ -34,5 +35,4 @@ class AuthApi {
       throw Exception('Failed to login user');
     }
   }
-
 }
