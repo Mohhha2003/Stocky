@@ -29,7 +29,7 @@ class AuthApi {
         '${ApiConstant.basseUrl}${ApiConstant.login}',
         data: {'email': email, 'password': password},
       );
-      return User.fromJson(response.data);
+      return User.fromJson(response.data['data']);
     } catch (e) {
       print('Error logging in user: $e');
       throw Exception('Failed to login user');
