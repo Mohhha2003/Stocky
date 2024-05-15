@@ -98,30 +98,30 @@ const addProductv2 = async(req,res) =>{
   }
 }
 
-// const addProduct =  async (req, res) => {
-//   try{
-//     const product = new Product();
-//     product.name = req.body.name;
-//     product.description = req.body.description;
-//     product.category = req.body.category;
-//     product.gender = req.body.gender;
-//     product.price = req.body.price;
-//     product.ownerId = req.body.ownerId;    
-//     if(req.file && req.file.path){
-//       product.image = req.file.path;
-//     }
-//     // Check if the ownerId exists in the users collection
+const addProduct =  async (req, res) => {
+  try{
+    const product = new Product();
+    product.name = req.body.name;
+    product.description = req.body.description;
+    product.category = req.body.category;
+    product.gender = req.body.gender;
+    product.price = req.body.price;
+    product.ownerId = req.body.ownerId;    
+    if(req.file && req.file.path){
+      product.image = req.file.path;
+    }
+    // Check if the ownerId exists in the users collection
 
-//     const userExists = await User.exists({ _id: product.ownerId });
-//     if (!userExists) {
-//       return res.status(404).json({ error: 'User not found' });
-//     } 
-//       await product.save()
-//       res.status(201).json({result : "product added successfully"});
-//   } catch{
-//     (error) => res.status(500).json({error : error.message})
-//   };
-// }
+    const userExists = await User.exists({ _id: product.ownerId });
+    if (!userExists) {
+      return res.status(404).json({ error: 'User not found' });
+    } 
+      await product.save()
+      res.status(201).json({result : "product added successfully"});
+  } catch{
+    (error) => res.status(500).json({error : error.message})
+  };
+}
 
 const updateProduct = async (req, res) => {
 
@@ -245,5 +245,5 @@ const category = async (req, res) => {
     gender,
     category,
     allProducts,
-    addProductv2
+    addProduct
   }
