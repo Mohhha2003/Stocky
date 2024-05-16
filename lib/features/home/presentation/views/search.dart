@@ -29,7 +29,6 @@ class _SearchScreenState extends State<SearchScreen> {
               maxLine: 1,
               controller: searchController,
               onChanged: (value) {
-
                 return null;
               },
               border: OutlineInputBorder(
@@ -46,7 +45,8 @@ class _SearchScreenState extends State<SearchScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ItemsDetails(product: models[index]),
+                      builder: (context) =>
+                          ItemsDetails(product: models[index]),
                     ),
                   );
                 },

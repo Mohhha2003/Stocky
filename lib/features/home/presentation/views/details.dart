@@ -41,7 +41,8 @@ class ItemsDetails extends StatelessWidget {
             child: Text(
               '\$${product.price}',
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
+              style:
+                  TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
             ),
           ),
           Container(

@@ -7,7 +7,7 @@ import 'package:project1/features/profile/presentation/views/account_view.dart';
 part 'app_state.dart';
 
 class AppCubit extends Cubit<AppStates> {
-  AppCubit() : super(AppInitial()); 
+  AppCubit() : super(AppInitial());
   static AppCubit get(context) => BlocProvider.of(context);
   int currentIndex = 0;
   void changeNav(int index) {
@@ -21,7 +21,4 @@ class AppCubit extends Cubit<AppStates> {
     FavScreen(),
     AccountView()
   ];
-  
-
-
 }

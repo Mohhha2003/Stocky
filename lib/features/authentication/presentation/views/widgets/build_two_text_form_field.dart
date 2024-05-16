@@ -38,6 +38,9 @@ class CustomTwoTextFromField extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
           ),
           child: CustomTextFormField(
+            validate: (p0) {
+              if (p0!.isEmpty) return 'Requried';
+            },
             isPassword: isPass,
             maxLine: 1,
             controller: controller1,
@@ -59,6 +62,9 @@ class CustomTwoTextFromField extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
           ),
           child: CustomTextFormField(
+            validate: (p0) {
+              if (p0!.isEmpty) return 'Requried';
+            },
             isPassword: isPass2,
             maxLine: 1,
             type: TextInputType.visiblePassword,

@@ -3,19 +3,17 @@ import 'package:project1/core/widgets/app_colors.dart';
 
 class FliterPart extends StatefulWidget {
   const FliterPart({super.key, required this.categories});
-    final List<String> categories;
-
+  final List<String> categories;
 
   @override
   State<FliterPart> createState() => _FliterPartState();
 }
 
 class _FliterPartState extends State<FliterPart> {
-
   int _selectedCategory = -1;
   @override
   Widget build(BuildContext context) {
-    return  SizedBox(
+    return SizedBox(
       height: 32,
       width: MediaQuery.of(context).size.width,
       child: ListView.builder(
@@ -39,7 +37,7 @@ class _FliterPartState extends State<FliterPart> {
                   : Colors.white,
             ),
             child: Text(
-             widget. categories[index],
+              widget.categories[index],
               style: TextStyle(
                 color: _selectedCategory == index
                     ? Colors.white

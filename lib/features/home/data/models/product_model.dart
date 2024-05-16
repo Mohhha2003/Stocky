@@ -19,14 +19,15 @@ class ProductModel {
       required this.ownerId});
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
-      id: json['_id'],
-      image: json['image'],
-      name: json['name'],
-      category: json['category'],
-      description: json['description'],
-      price: json['price'],
-      gender: json['gender'],
-      ownerId: json['ownerId']);
+        id: json['_id'],
+        image: json['image'],
+        name: json['name'],
+        category: json['category'],
+        description: json['description'],
+        price: json['price'],
+        gender: json['gender'],
+        ownerId: json['ownerId'],
+      );
 
   static List<ProductModel> fromJsonList(List<Map<String, dynamic>> jsonList) {
     return jsonList.map((json) => ProductModel.fromJson(json)).toList();

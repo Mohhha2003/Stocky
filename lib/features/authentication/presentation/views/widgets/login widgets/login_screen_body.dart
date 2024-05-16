@@ -72,14 +72,15 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                     ),
                     const Gap(40),
                     CustomButton(
-                      onPressed: () async{
+                      onPressed: () async {
                         if (formKey.currentState!.validate()) {
                           try {
-                          await  AuthApi().loginUser(
+                            await AuthApi().loginUser(
                                 email: emailController.text,
                                 password: passController.text);
+                            GoRouter.of(context)
+                                .pushReplacement(AppRoutes.homeView);
                           } on Exception catch (e) {
-                            // ignore: use_build_context_synchronously
                             showSnackBar(text: e.toString(), context: context);
                           }
                         }

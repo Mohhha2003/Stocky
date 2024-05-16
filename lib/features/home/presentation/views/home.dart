@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:project1/Services/repos/authRepo.dart';
 import 'package:project1/Services/repos/cart_repo.dart';
 import 'package:project1/Services/repos/fav_repo.dart';
+import 'package:project1/core/utils/show_snack_bar.dart';
 import 'package:project1/features/home/data/models/product_model.dart';
 import '../../../../Services/api_con.dart';
 import 'details.dart';
@@ -18,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final ApiCon apiCon = ApiCon();
   @override
   void initState() {
-    CartRepo().getUserCartProduct(owenerId: '66436148997939ee89ee912f');
+    CartRepo().getUserCartProduct(owenerId: '6643ee8e1e9cacd747f0ba0c');
     super.initState();
   }
 
@@ -94,9 +96,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 Container(
                                   decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: NetworkImage(product
-                                          .image), // Use product's image URL
+                                    image: const DecorationImage(
+                                      image: NetworkImage(
+                                          ''), // Use product's image URL
                                       fit: BoxFit.fill,
                                     ),
                                     borderRadius: BorderRadius.circular(15),
@@ -114,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 const SizedBox(height: 10),
                                 Text(
-                                  product.description,
+                                  product.description ?? 'No Desc',
                                   style: const TextStyle(
                                       fontSize: 14, color: Colors.grey),
                                 ),
@@ -168,11 +170,19 @@ class CustomPriceRow extends StatelessWidget {
           ),
         ),
         IconButton(
-          onPressed: () {
-            print('FAvvvv');
-            Fav().addToFavorite(product: product);
+          onPressed: () async {
+            try {
+              await Fav().addToFavorite(product: product, userId: AuthApi.currentUser.id!);
+            } on Exception catch (e) {
+              showSnackBar(text: 'Error Adding to Fav', context: context);
+            }
           },
-          icon: const Icon(IconlyBroken.heart),
+          icon: true
+              ? const Icon(
+                  IconlyBroken.download,
+                  color: Colors.red,
+                )
+              : const Icon(IconlyBroken.heart),
         ),
       ],
     );

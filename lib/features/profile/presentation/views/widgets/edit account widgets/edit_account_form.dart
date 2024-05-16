@@ -8,7 +8,8 @@ class EditAccountForm extends StatefulWidget {
     required this.user,
     required this.nameController,
     required this.emailController,
-    required this.passwordController, required this.formkey,
+    required this.passwordController,
+    required this.formkey,
   });
   final UserDetailsModel user;
   final TextEditingController nameController;

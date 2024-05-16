@@ -6,9 +6,8 @@ import 'Services/api_con.dart';
 import 'core/utils/app_routes.dart';
 import 'features/home/presentation/manager/app cubit/app_cubit.dart';
 
-void main()async {
+void main() async {
   runApp(const MyApp());
-
 }
 
 class MyApp extends StatelessWidget {

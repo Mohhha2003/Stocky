@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:project1/Services/repos/authRepo.dart';
 import 'package:project1/Services/repos/fav_repo.dart';
-import 'package:project1/features/home/data/models/product_model.dart';
+import 'package:project1/core/utils/show_snack_bar.dart';
+import 'package:project1/features/home/data/models/favourites/favourites.dart';
 import 'package:project1/features/home/presentation/views/widgets/custom_product_list_item.dart';
 
 class FavScreen extends StatelessWidget {
@@ -8,8 +10,8 @@ class FavScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: Fav().getUserFavourites(ownerId: '66436148997939ee89ee912f'),
+    return FutureBuilder<List<Favourites>>(
+      future: Fav().getUserFavourites(ownerId: AuthApi.currentUser.id!),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -20,7 +22,7 @@ class FavScreen extends StatelessWidget {
             child: Text('Error is ${snapshot.error}'),
           );
         } else {
-          List<ProductModel> products = snapshot.data ?? [];
+          List<Favourites> products = snapshot.data ?? [];
           return ListView.builder(
             padding: const EdgeInsets.all(15),
             itemBuilder: (context, index) => Dismissible(
@@ -29,8 +31,18 @@ class FavScreen extends StatelessWidget {
                 color: Colors.transparent,
                 child: const Icon(Icons.delete),
               ),
-              onDismissed: (direction) {
-                if (direction == AxisDirection.right) {}
+              onDismissed: (direction) async {
+                print('object');
+                if (direction == DismissDirection.startToEnd) {
+                  print('right');
+                  try {
+                    await Fav().deleteFavourite(product: products[index]);
+                  } on Exception catch (e) {
+                    showSnackBar(
+                        text: 'Failed To delete Product From Fav',
+                        context: context);
+                  }
+                }
               },
               key: GlobalKey(),
               child: const Padding(

@@ -9,7 +9,8 @@ class EditAccountInputDetails extends StatefulWidget {
     required this.controller,
     this.enabled,
     required this.lable,
-    this.isPassword, required nameController,
+    this.isPassword,
+    required nameController,
   });
   final AutovalidateMode autovalidateMode;
   final TextEditingController controller;
@@ -29,8 +30,7 @@ class _EditAccountInputDetailsState extends State<EditAccountInputDetails> {
       mainAxisSize: MainAxisSize.min,
       children: [
         CustomAuthenticationTextformfield(
-          
-          isPassword: widget.isPassword??false,
+          isPassword: widget.isPassword ?? false,
           enabled: widget.enabled,
           autovalidateMode: widget.autovalidateMode,
           controller: widget.controller,

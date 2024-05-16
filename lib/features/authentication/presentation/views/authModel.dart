@@ -1,4 +1,5 @@
 class User {
+  String? id;
   String name;
   String email;
   String password;
@@ -8,10 +9,12 @@ class User {
       {required this.name,
       required this.email,
       required this.password,
+      this.id,
       this.image});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
+      id: json['_id'],
       name: json['name'],
       email: json['email'],
       password: json['password'],
@@ -21,7 +24,7 @@ class User {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name; 
+    data['name'] = this.name;
     data['email'] = this.email;
     data['password'] = this.password;
     data['image'] = this.image;

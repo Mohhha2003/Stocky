@@ -67,11 +67,7 @@ class _EditAccountViewBodyState extends State<EditAccountViewBody> {
             AnimatedOpacity(
               opacity: 1,
               duration: const Duration(milliseconds: 300),
-              child: CustomActionButton(
-                  buttonText: 'Update',
-                  onTap: () {
-                    
-                  }),
+              child: CustomActionButton(buttonText: 'Update', onTap: () {}),
             ),
             const Gap(20)
           ],
