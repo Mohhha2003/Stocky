@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:project1/core/utils/api_constant.dart';
+import 'package:project1/core/utils/show_snack_bar.dart';
 import '../../features/authentication/presentation/views/authModel.dart';
 
 class AuthApi {
@@ -30,7 +31,7 @@ class AuthApi {
         data: {'email': email, 'password': password},
       );
       return User.fromJson(response.data);
-    } catch (e) {
+    } on DioException catch (e) {
       print('Error logging in user: $e');
       throw Exception('Failed to login user');
     }

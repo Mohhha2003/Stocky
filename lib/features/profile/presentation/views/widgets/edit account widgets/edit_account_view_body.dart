@@ -20,15 +20,17 @@ class _EditAccountViewBodyState extends State<EditAccountViewBody> {
   late TextEditingController nameController;
   late TextEditingController emailController;
   late TextEditingController passwordController;
+  late GlobalKey<FormState> formkey;
 
   @override
   void initState() {
     nameController = TextEditingController(text: widget.user.name);
     emailController = TextEditingController(text: widget.user.email);
     passwordController = TextEditingController(text: widget.user.password);
+    formkey = GlobalKey();
 
     newName = nameController.text;
-    newPhotoUrl = widget.user.email!;
+    newPhotoUrl = widget.user.email;
     super.initState();
   }
 
@@ -55,6 +57,7 @@ class _EditAccountViewBodyState extends State<EditAccountViewBody> {
               20,
             ),
             EditAccountForm(
+              formkey: formkey,
               passwordController: passwordController,
               emailController: emailController,
               user: widget.user,
@@ -64,7 +67,11 @@ class _EditAccountViewBodyState extends State<EditAccountViewBody> {
             AnimatedOpacity(
               opacity: 1,
               duration: const Duration(milliseconds: 300),
-              child: CustomActionButton(buttonText: 'Update', onTap: () {}),
+              child: CustomActionButton(
+                  buttonText: 'Update',
+                  onTap: () {
+                    
+                  }),
             ),
             const Gap(20)
           ],

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project1/Services/repos/authRepo.dart';
+import 'package:project1/core/utils/show_snack_bar.dart';
 import '../../../../../../core/utils/app_routes.dart';
 import '../../../../../../core/widgets/app_colors.dart';
 import '../../../../../../core/widgets/custom_my_button.dart';
@@ -69,9 +71,17 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                     ),
                     const Gap(40),
                     CustomButton(
-                      onPressed: () {
-                        GoRouter.of(context)
-                            .pushReplacement(AppRoutes.homeView);
+                      onPressed: () async{
+                        if (formKey.currentState!.validate()) {
+                          try {
+                          await  AuthApi().loginUser(
+                                email: emailController.text,
+                                password: passController.text);
+                          } on Exception catch (e) {
+                            // ignore: use_build_context_synchronously
+                            showSnackBar(text: e.toString(), context: context);
+                          }
+                        }
                       },
                       text: 'Login',
                       height: 42,
@@ -90,6 +100,9 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                       text: 'Don\'t have account ?',
                       textButton: 'create account',
                       onPressed: () {
+                        AuthApi().loginUser(
+                            email: emailController.text,
+                            password: passController.text);
                         GoRouter.of(context)
                             .pushReplacement(AppRoutes.registerView);
                       },
