@@ -30,8 +30,8 @@ class AuthApi {
         '${ApiConstant.basseUrl}${ApiConstant.login}',
         data: {'email': email, 'password': password},
       );
-      return User.fromJson(response.data);
-    } on DioException catch (e) {
+      return User.fromJson(response.data['data']);
+    } catch (e) {
       print('Error logging in user: $e');
       throw Exception('Failed to login user');
     }

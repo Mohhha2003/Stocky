@@ -6,23 +6,24 @@ import 'package:project1/core/utils/show_snack_bar.dart';
 import '../../../../../../core/utils/app_routes.dart';
 import '../../../../../../core/widgets/app_colors.dart';
 import '../../../../../../core/widgets/custom_my_button.dart';
+import '../../../../../../core/widgets/custom_text_form_feild.dart';
 import '../build_rich_text.dart';
 import '../build_text_next_to_text_button.dart';
 import '../build_two_text_form_field.dart';
-import 'custom_additional_content.dart';
 import 'custom_forget_password.dart';
 
 class LoginScreenBody extends StatefulWidget {
-  const LoginScreenBody({super.key});
+  const LoginScreenBody({Key? key});
 
   @override
   State<LoginScreenBody> createState() => _LoginScreenBodyState();
 }
 
 class _LoginScreenBodyState extends State<LoginScreenBody> {
-  var formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   late TextEditingController emailController;
   late TextEditingController passController;
+
   @override
   void initState() {
     emailController = TextEditingController();
@@ -94,11 +95,10 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                       fontSize: 20,
                     ),
                     const Gap(10),
-                    const CustomAdditionalContent(),
                     customTextNextToTextButton(
                       context: context,
-                      text: 'Don\'t have account ?',
-                      textButton: 'create account',
+                      text: 'Don\'t have an account ?',
+                      textButton: 'Create Account',
                       onPressed: () {
                         AuthApi().loginUser(
                             email: emailController.text,

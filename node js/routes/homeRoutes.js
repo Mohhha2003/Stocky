@@ -36,7 +36,7 @@ router.patch('/api/products/', upload.single("image"), homeController.updateProd
 
 router.get('/api/', homeController.getProductByOwnerId );
 
-router.post('/api/add/', upload.single("image"), homeController.addProductv2);
+router.post('/api/add/', upload.single("image"), homeController.addProduct);
 
 
 module.exports = router;

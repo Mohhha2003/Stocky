@@ -4,7 +4,7 @@ const User  = require('../models/authModel');
 
 const addProduct = async (req, res) => {
     try {
-      const { ownerId, productId, name, price, quantity } = req.body;
+      const { ownerId, productId, quantity } = req.body;
       try{
       // Check if the ownerId exists in the users collection
       const userExists = await  User.exists({ _id: ownerId });
@@ -27,7 +27,7 @@ const addProduct = async (req, res) => {
         cartItem.quantity += quantity *1;
       } else {
         // If item does not exist, create new cart item
-        cartItem = new CartItem({ ownerId, productId, name, price, quantity });
+        cartItem = new CartItem({ ownerId, productId, quantity });
       }
   
       // Save the cart item
