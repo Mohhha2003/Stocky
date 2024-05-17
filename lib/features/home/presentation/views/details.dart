@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:project1/Services/repos/cart_repo.dart';
+import 'package:project1/core/utils/show_snack_bar.dart';
 import 'package:project1/features/home/data/models/product_model.dart';
 
 class ItemsDetails extends StatelessWidget {
@@ -26,7 +28,7 @@ class ItemsDetails extends StatelessWidget {
           Text(
             product.name,
             textAlign: TextAlign.center,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
           Container(
             margin: const EdgeInsets.only(top: 10),
@@ -41,8 +43,8 @@ class ItemsDetails extends StatelessWidget {
             child: Text(
               '\$${product.price}',
               textAlign: TextAlign.center,
-              style:
-                  TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                  color: Colors.orange, fontWeight: FontWeight.bold),
             ),
           ),
           Container(
@@ -64,7 +66,17 @@ class ItemsDetails extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 15),
               color: Colors.black,
               textColor: Colors.white,
-              onPressed: () {},
+              onPressed: () async {
+                try {
+                  await CartRepo().addToCart(product: product);
+                  showSnackBar(
+                      text: 'Added To Cart',
+                      context: context,
+                      backgroundColor: Colors.green);
+                } on Exception catch (e) {
+                  showSnackBar(text: 'Error Adding to Cart', context: context);
+                }
+              },
               child: const Text("Add To Cart"),
             ),
           )

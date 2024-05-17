@@ -1,13 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:project1/Services/repos/fav_repo.dart';
 import 'package:project1/core/utils/api_constant.dart';
-import 'package:project1/core/utils/show_snack_bar.dart';
+import 'package:project1/features/home/data/models/favourites/favourites.dart';
 import '../../features/authentication/presentation/views/authModel.dart';
 
 class AuthApi {
   late Dio dio;
 
   static late User currentUser;
+  static late List<Favourites> favourites;
 
   AuthApi() {
     dio = Dio();
@@ -36,7 +37,8 @@ class AuthApi {
       );
       User nowUser = User.fromJson(response.data['data']);
       print('The user id is ${nowUser.id}');
-      await Fav().getUserFavourites(ownerId: nowUser.id ?? 'null');
+      favourites = await Fav().getUserFavourites(ownerId: nowUser.id ?? 'null');
+
       currentUser = nowUser;
       return nowUser;
     } catch (e) {

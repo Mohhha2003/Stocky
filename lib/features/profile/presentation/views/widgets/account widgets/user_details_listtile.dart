@@ -19,13 +19,13 @@ class UserDetailsListTile extends StatelessWidget {
         leading: ClipRRect(
           borderRadius: BorderRadius.circular(27),
           child: cachedProfilNetworkImage(
-              imageUrl: user.email ?? '', height: 64, width: 64),
+              imageUrl: user.email, height: 64, width: 64),
         ),
         title: CustomUserName(
           user: user,
         ),
         subtitle: Text(
-          user.email ?? 'undefined',
+          user.email,
           style: const TextStyle(
               fontSize: 16, color: Color(AppColors.kPrimaryColor)),
         ),

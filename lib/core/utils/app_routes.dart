@@ -26,7 +26,7 @@ abstract class AppRoutes {
       GoRoute(
         path: homeView,
         builder: (BuildContext context, GoRouterState state) {
-          return const HomePage();
+          return const BottomNavBarPage();
         },
       ),
       GoRoute(

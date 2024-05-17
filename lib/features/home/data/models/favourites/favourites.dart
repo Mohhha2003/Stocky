@@ -1,3 +1,6 @@
+import 'package:project1/Services/repos/authRepo.dart';
+import 'package:project1/features/home/data/models/product_model.dart';
+
 class Favourites {
   String? id;
   String? productId;
@@ -32,4 +35,13 @@ class Favourites {
         'price': price,
         '__v': v,
       };
+
+  Favourites fromProductModelToFavouritesModel(
+          {required ProductModel productModel}) =>
+      Favourites(
+          name: productModel.name,
+          ownerId: AuthApi.currentUser.id,
+          productId: productModel.id,
+          price: productModel.price,
+          id: productModel.id);
 }

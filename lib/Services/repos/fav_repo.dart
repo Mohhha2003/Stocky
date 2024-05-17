@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:project1/Services/repos/authRepo.dart';
 import 'package:project1/core/utils/api_constant.dart';
 import 'package:project1/features/home/data/models/favourites/favourites.dart';
 import 'package:project1/features/home/data/models/product_model.dart';
@@ -10,12 +11,14 @@ class Fav {
     dio = Dio();
   }
 
-  Future<bool> addToFavorite({required ProductModel product,required String userId}) async {
+  Future<bool> addToFavorite({required ProductModel product}) async {
+    Map<String, dynamic> productMap = product.toJson();
+    productMap['ownerId'] = AuthApi.currentUser.id!;
     try {
       Response response = await dio.post(
           '${ApiConstant.basseUrl}${ApiConstant.favourite}',
-          data: product.toJson());
-      print(response.data);
+          data: productMap);
+
       return true;
     } on DioException catch (e) {
       print('The error in fav is $e');

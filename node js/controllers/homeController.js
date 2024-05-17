@@ -108,6 +108,9 @@ const addProduct =  async (req, res) => {
     product.price = req.body.price;
     product.ownerId = req.body.ownerId;    
     if(req.file && req.file.path){
+      product.imagePath = `http://${req.get("host")}/images${
+        req.file.filename
+      }`;
       product.image = req.file.path;
     }
     // Check if the ownerId exists in the users collection

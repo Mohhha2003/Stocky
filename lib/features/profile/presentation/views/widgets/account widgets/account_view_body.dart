@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project1/core/utils/app_routes.dart';
 import 'package:project1/core/widgets/app_colors.dart';
+import 'package:project1/features/home/presentation/manager/app%20cubit/app_cubit.dart';
 import '../../../../data/models/account_tile_model.dart';
 import '../../../../data/models/user details model/user_details.dart';
 import 'account_list_view.dart';
@@ -63,10 +65,15 @@ class AccountViewBody extends StatelessWidget {
                     GoRouter.of(context).push(AppRoutes.checkEmail);
                   }),
               AccountModel(
+                  title: 'Add Product',
+                  leadingIcon: FontAwesomeIcons.add,
+                  onTap: () {}),
+              AccountModel(
                   title: 'LogOut',
                   leadingIcon: Icons.info_outlined,
                   onTap: () {
                     GoRouter.of(context).pushReplacement(AppRoutes.loginView);
+                    context.read<AppCubit>().currentIndex = 0;
                   }),
             ],
           )),

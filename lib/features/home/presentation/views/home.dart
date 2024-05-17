@@ -4,6 +4,7 @@ import 'package:project1/Services/repos/authRepo.dart';
 import 'package:project1/Services/repos/cart_repo.dart';
 import 'package:project1/Services/repos/fav_repo.dart';
 import 'package:project1/core/utils/show_snack_bar.dart';
+import 'package:project1/features/home/data/models/favourites/favourites.dart';
 import 'package:project1/features/home/data/models/product_model.dart';
 import '../../../../Services/api_con.dart';
 import 'details.dart';
@@ -20,7 +21,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final ApiCon apiCon = ApiCon();
   @override
   void initState() {
-    CartRepo().getUserCartProduct(owenerId: '6643ee8e1e9cacd747f0ba0c');
     super.initState();
   }
 
@@ -77,6 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     itemBuilder: (context, index) {
                       ProductModel product = products![index];
+                      bool isProduct = isProductFav(productId: product.id);
                       return InkWell(
                         onTap: () {
                           Navigator.of(context).push(
@@ -95,17 +96,50 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Container(
-                                  decoration: BoxDecoration(
-                                    image: const DecorationImage(
-                                      image: NetworkImage(
-                                          ''), // Use product's image URL
-                                      fit: BoxFit.fill,
-                                    ),
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  width: double.infinity,
-                                  height: 150,
-                                ),
+                                    padding: const EdgeInsets.all(20),
+                                    height: 150,
+                                    width: double.infinity,
+                                    child: Image.network(
+                                      '',
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        } else {
+                                          return Center(
+                                            child: CircularProgressIndicator(
+                                              value: loadingProgress
+                                                          .expectedTotalBytes !=
+                                                      null
+                                                  ? loadingProgress
+                                                          .cumulativeBytesLoaded /
+                                                      loadingProgress
+                                                          .expectedTotalBytes!
+                                                  : null,
+                                            ),
+                                          );
+                                        }
+                                      },
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return const Center(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.error,
+                                                  color: Colors.red),
+                                              Text('Failed to load image',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      color: Colors.red)),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                      height: 90,
+                                      fit: BoxFit.cover,
+                                    )),
                                 const SizedBox(height: 10),
                                 Text(
                                   product.name,
@@ -116,12 +150,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 const SizedBox(height: 10),
                                 Text(
-                                  product.description ?? 'No Desc',
+                                  product.description,
                                   style: const TextStyle(
                                       fontSize: 14, color: Colors.grey),
                                 ),
                                 const SizedBox(height: 10),
                                 CustomPriceRow(
+                                  isFav: isProduct,
                                   product: product,
                                   price: product.price,
                                   productId: product.id,
@@ -143,26 +178,32 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class CustomPriceRow extends StatelessWidget {
+class CustomPriceRow extends StatefulWidget {
   final int price;
 
-  const CustomPriceRow({
+  CustomPriceRow({
     Key? key,
     required this.price,
     required this.productId,
     required this.product,
+    required this.isFav,
   }) : super(key: key);
-
+  bool isFav;
   final String productId;
   final ProductModel product;
 
+  @override
+  State<CustomPriceRow> createState() => _CustomPriceRowState();
+}
+
+class _CustomPriceRowState extends State<CustomPriceRow> {
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          price.toString(),
+          widget.price.toString(),
           style: const TextStyle(
             fontSize: 14,
             color: Colors.orange,
@@ -171,15 +212,39 @@ class CustomPriceRow extends StatelessWidget {
         ),
         IconButton(
           onPressed: () async {
-            try {
-              await Fav().addToFavorite(product: product, userId: AuthApi.currentUser.id!);
-            } on Exception catch (e) {
-              showSnackBar(text: 'Error Adding to Fav', context: context);
+            if (widget.isFav) {
+              try {
+                await Fav().deleteFavourite(
+                    product: Favourites().fromProductModelToFavouritesModel(
+                        productModel: widget.product));
+                showSnackBar(text: 'Removed From Fav', context: context);
+                AuthApi.favourites.remove(Favourites()
+                    .fromProductModelToFavouritesModel(
+                        productModel: widget.product));
+                widget.isFav = false;
+              } on Exception catch (e) {
+                showSnackBar(text: 'Error Removing to Fav', context: context);
+              }
+            } else {
+              try {
+                await Fav().addToFavorite(product: widget.product);
+                showSnackBar(
+                    text: 'Added To Fav',
+                    context: context,
+                    backgroundColor: Colors.green);
+                widget.isFav = true;
+                AuthApi.favourites.add(Favourites()
+                    .fromProductModelToFavouritesModel(
+                        productModel: widget.product));
+              } on Exception catch (e) {
+                showSnackBar(text: 'Error Adding to Fav', context: context);
+              }
             }
+            setState(() {});
           },
-          icon: true
+          icon: widget.isFav
               ? const Icon(
-                  IconlyBroken.download,
+                  Icons.favorite_rounded,
                   color: Colors.red,
                 )
               : const Icon(IconlyBroken.heart),
@@ -187,4 +252,13 @@ class CustomPriceRow extends StatelessWidget {
       ],
     );
   }
+}
+
+bool isProductFav({required String productId}) {
+  for (var fav in AuthApi.favourites) {
+    if (fav.productId == productId) {
+      return true;
+    }
+  }
+  return false;
 }

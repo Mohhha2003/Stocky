@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project1/Services/repos/authRepo.dart';
 import 'package:project1/core/utils/assets.dart';
+import 'package:project1/features/authentication/presentation/views/authModel.dart';
 
 import '../../../../../core/utils/app_routes.dart';
 import '../../../../../core/widgets/app_colors.dart';
@@ -25,7 +27,9 @@ class OnboardingViewBody extends StatelessWidget {
           CustomActionButton(
               height: 55,
               onTap: () {
-                GoRouter.of(context).pushReplacement(AppRoutes.homeView);
+                GoRouter.of(context).push(AppRoutes.homeView);
+                AuthApi.currentUser =
+                    User(name: 'Anonymous', email: '', password: '');
               },
               buttonText: 'Get Started'),
           const SizedBox(
@@ -34,7 +38,7 @@ class OnboardingViewBody extends StatelessWidget {
           CustomActionButton(
             height: 55,
             onTap: () {
-              AppRoutes.router.pushReplacement(AppRoutes.loginView);
+              AppRoutes.router.push(AppRoutes.loginView);
             },
             buttonText: 'Login',
             backgroundColor: Colors.transparent,

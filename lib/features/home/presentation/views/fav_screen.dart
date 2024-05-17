@@ -11,7 +11,7 @@ class FavScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Favourites>>(
-      future: Fav().getUserFavourites(ownerId: AuthApi.currentUser.id!),
+      future: Fav().getUserFavourites(ownerId: AuthApi.currentUser.id ?? ''),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -23,35 +23,38 @@ class FavScreen extends StatelessWidget {
           );
         } else {
           List<Favourites> products = snapshot.data ?? [];
-          return ListView.builder(
-            padding: const EdgeInsets.all(15),
-            itemBuilder: (context, index) => Dismissible(
-              direction: DismissDirection.startToEnd,
-              background: Container(
-                color: Colors.transparent,
-                child: const Icon(Icons.delete),
-              ),
-              onDismissed: (direction) async {
-                print('object');
-                if (direction == DismissDirection.startToEnd) {
-                  print('right');
-                  try {
-                    await Fav().deleteFavourite(product: products[index]);
-                  } on Exception catch (e) {
-                    showSnackBar(
-                        text: 'Failed To delete Product From Fav',
-                        context: context);
-                  }
-                }
-              },
-              key: GlobalKey(),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: CustomProductListItem(),
-              ),
-            ),
-            itemCount: products.length,
-          );
+          return AuthApi.currentUser.id == null
+              ? const Center(
+                  child: Text('Please Login To Add Favourites'),
+                )
+              : ListView.builder(
+                  padding: const EdgeInsets.all(15),
+                  itemBuilder: (context, index) => Dismissible(
+                    direction: DismissDirection.startToEnd,
+                    background: Container(
+                      color: Colors.transparent,
+                      child: const Icon(Icons.delete),
+                    ),
+                    onDismissed: (direction) async {
+                      if (direction == DismissDirection.startToEnd) {
+                        try {
+                          await Fav().deleteFavourite(product: products[index]);
+                          AuthApi.favourites.remove(products[index]);
+                        } on Exception catch (e) {
+                          showSnackBar(
+                              text: 'Failed To delete Product From Fav',
+                              context: context);
+                        }
+                      }
+                    },
+                    key: GlobalKey(),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: CustomProductListItem(),
+                    ),
+                  ),
+                  itemCount: products.length,
+                );
         }
       },
     );

@@ -17,7 +17,7 @@ class CustomUserName extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          user.name ?? 'undefined',
+          user.name,
           style: const TextStyle(
               fontSize: 20, color: Color(AppColors.kPrimaryColor)),
         ),

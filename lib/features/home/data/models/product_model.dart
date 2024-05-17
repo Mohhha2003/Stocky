@@ -42,7 +42,7 @@ class ProductModel {
     data['description'] = description;
     data['price'] = price;
     data['gender'] = gender;
-    data['ownerId'] = ownerId;
+    // data['ownerId'] = ownerId;
     return data;
   }
 }

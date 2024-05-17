@@ -9,6 +9,8 @@ const addToFavourite = async (req, res) => {
       const item = new Favourite(req.body); // Create a new instance of Favourite with req.body
       try{
         // Check if the ownerId exists in the users collection
+        const product  = await Product.findById(body.productId)
+
         const userExists = await  User.exists({ _id: req.body.ownerId });
         if (!userExists) {
             return res.status(404).json({ error: 'User not found' });
@@ -27,7 +29,7 @@ const addToFavourite = async (req, res) => {
         }
       await item.save();
       
-      res.status(201).json({ result: "Item added successfully" });
+      res.status(201).json({produproductct});
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal server error" });

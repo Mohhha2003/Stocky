@@ -4,9 +4,7 @@ import 'package:gap/gap.dart';
 import '../../../../../core/utils/assets.dart';
 
 class CustomProductListItem extends StatelessWidget {
-  const CustomProductListItem({
-    super.key,
-  });
+  const CustomProductListItem({super.key});
 
   @override
   Widget build(BuildContext context) {

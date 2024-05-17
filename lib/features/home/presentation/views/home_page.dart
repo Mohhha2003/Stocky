@@ -4,14 +4,14 @@ import 'package:iconly/iconly.dart';
 import 'package:project1/features/home/presentation/manager/app%20cubit/app_cubit.dart';
 import 'package:project1/features/home/presentation/views/search.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class BottomNavBarPage extends StatefulWidget {
+  const BottomNavBarPage({super.key});
 
   @override
-  State<StatefulWidget> createState() => _HomePageState();
+  State<StatefulWidget> createState() => _BottomNavBarPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _BottomNavBarPageState extends State<BottomNavBarPage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppStates>(
