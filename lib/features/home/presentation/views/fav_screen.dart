@@ -39,7 +39,8 @@ class FavScreen extends StatelessWidget {
                       if (direction == DismissDirection.startToEnd) {
                         try {
                           await Fav().deleteFavourite(product: products[index]);
-                          AuthApi.favourites.remove(products[index]);
+                          AuthApi.favourites.removeAt(index);
+                          
                         } on Exception catch (e) {
                           showSnackBar(
                               text: 'Failed To delete Product From Fav',

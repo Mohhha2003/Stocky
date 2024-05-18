@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
 import 'package:project1/Services/repos/authRepo.dart';
-import 'package:project1/Services/repos/cart_repo.dart';
 import 'package:project1/Services/repos/fav_repo.dart';
 import 'package:project1/core/utils/show_snack_bar.dart';
 import 'package:project1/features/home/data/models/favourites/favourites.dart';
 import 'package:project1/features/home/data/models/product_model.dart';
-import '../../../../Services/api_con.dart';
+import 'package:project1/features/home/presentation/manager/cubit/store_cubit.dart';
+import '../../../../Services/store_repo.dart';
 import 'details.dart';
 import 'fliter.dart';
 
@@ -18,9 +19,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final ApiCon apiCon = ApiCon();
+  late final ProductRepo apiCon;
   @override
   void initState() {
+    apiCon = ProductRepo();
     super.initState();
   }
 
@@ -41,8 +43,19 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            const FliterPart(
-              categories: ["Bags", "T-Shirts", "Shoes", "SweatShirt", "Other"],
+            FliterPart(
+              onTap: (p0) {
+                context.read<StoreCubit>().categorie = p0;
+                context.read<StoreCubit>().getPorductCategorie();
+                print(p0);
+              },
+              categories: const [
+                "Bags",
+                "T-shirts",
+                "Shoes",
+                "SweatShirt",
+                "Other"
+              ],
             ),
             const SizedBox(height: 30),
             Container(height: 20),
@@ -53,21 +66,28 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
             ),
-            const FliterPart(
-              categories: ['Male', 'Female'],
+            FliterPart(
+              onTap: (p0) {
+                context.read<StoreCubit>().gender = p0;
+                context.read<StoreCubit>().getPorductCategorie();
+                print(p0);
+              },
+              categories: const ['men', 'woman'],
             ),
             Container(height: 20),
-            FutureBuilder<List<ProductModel>>(
-              future: apiCon.getAllProducts(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
+            BlocBuilder<StoreCubit, StoreState>(
+              builder: (context, state) {
+                if (state is StoreLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (state is StoreEmpty) {
+                  return const Center(
+                    child: Text('The Store is Empty No Data Found'),
+                  );
                 } else {
-                  List<ProductModel>? products = snapshot.data;
                   return GridView.builder(
-                    itemCount: products?.length ?? 0,
+                    itemCount: context.read<StoreCubit>().prodcuts.length,
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     gridDelegate:
@@ -76,7 +96,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisExtent: 359,
                     ),
                     itemBuilder: (context, index) {
-                      ProductModel product = products![index];
+                      ProductModel product =
+                          context.read<StoreCubit>().prodcuts[index];
                       bool isProduct = isProductFav(productId: product.id);
                       return InkWell(
                         onTap: () {
@@ -170,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 }
               },
-            ),
+            )
           ],
         ),
       ),
@@ -257,6 +278,7 @@ class _CustomPriceRowState extends State<CustomPriceRow> {
 bool isProductFav({required String productId}) {
   for (var fav in AuthApi.favourites) {
     if (fav.productId == productId) {
+      print(fav.id);
       return true;
     }
   }

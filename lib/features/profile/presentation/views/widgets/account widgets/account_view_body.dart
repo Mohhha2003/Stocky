@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project1/core/utils/app_routes.dart';
+import 'package:project1/core/widgets/about_us.dart';
 import 'package:project1/core/widgets/app_colors.dart';
 import 'package:project1/features/home/presentation/manager/app%20cubit/app_cubit.dart';
 import '../../../../data/models/account_tile_model.dart';
@@ -57,7 +58,7 @@ class AccountViewBody extends StatelessWidget {
               AccountModel(
                   title: 'About',
                   leadingIcon: Icons.info_outlined,
-                  onTap: () {}),
+                  onTap: () => showAboutUsDialog(context)),
               AccountModel(
                   title: 'My Orders',
                   leadingIcon: Icons.store,

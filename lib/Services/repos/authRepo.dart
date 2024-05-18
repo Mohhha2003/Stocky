@@ -8,7 +8,7 @@ class AuthApi {
   late Dio dio;
 
   static late User currentUser;
-  static late List<Favourites> favourites;
+  static List<Favourites> favourites = [];
 
   AuthApi() {
     dio = Dio();
@@ -20,6 +20,7 @@ class AuthApi {
         '${ApiConstant.basseUrl}${ApiConstant.register}',
         data: user.toJson(),
       );
+      currentUser = User.fromJson(response.data['data']);
       return User.fromJson(response.data['data']);
     } catch (e) {
       print('Error registering user: $e');

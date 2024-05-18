@@ -11,6 +11,11 @@ class AccountView extends StatefulWidget {
 
 class _AccountViewState extends State<AccountView> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AccountViewBody(
       user: UserDetailsModel(

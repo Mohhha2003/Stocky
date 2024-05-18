@@ -13,7 +13,7 @@ class Fav {
 
   Future<bool> addToFavorite({required ProductModel product}) async {
     Map<String, dynamic> productMap = product.toJson();
-    productMap['ownerId'] = AuthApi.currentUser.id!;
+    productMap['ownerId'] = AuthApi.currentUser.id ?? "";
     try {
       Response response = await dio.post(
           '${ApiConstant.basseUrl}${ApiConstant.favourite}',
@@ -23,7 +23,6 @@ class Fav {
     } on DioException catch (e) {
       print('The error in fav is $e');
       throw Exception(e.message);
-      return false;
     }
   }
 
@@ -57,7 +56,6 @@ class Fav {
       Response response = await dio.delete(
           '${ApiConstant.basseUrl}${ApiConstant.favourite}',
           data: product.toJson());
-      print(response.data);
       return true;
     } on DioException catch (e) {
       print('The error in fav is $e');

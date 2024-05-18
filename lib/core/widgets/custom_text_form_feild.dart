@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  const CustomTextFormField({
+   CustomTextFormField({
     super.key,
     this.formFieldKey,
     required this.isPassword,
@@ -41,7 +41,7 @@ class CustomTextFormField extends StatelessWidget {
   final TextEditingController? controller;
   final String? Function(String?)? onSubmitted;
   final String? Function(String?)? onSaved;
-  final String? Function(String?)? onChanged;
+  Function(String)? onChanged;
   final String? Function(String?)? validate;
   final String? hint;
   final IconData? prefixIcon;

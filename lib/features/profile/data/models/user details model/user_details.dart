@@ -5,6 +5,7 @@ class UserDetailsModel {
   final String name;
   final String email;
   final String password;
+  final String? id;
   List<ProductModel>? fav;
 
   UserDetailsModel(
@@ -12,7 +13,7 @@ class UserDetailsModel {
       required this.name,
       required this.email,
       required this.password,
-      required String id,
+      this.id,
       this.fav});
 
   factory UserDetailsModel.fromJson(Map<String, dynamic> json) {
