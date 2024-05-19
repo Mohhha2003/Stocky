@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:project1/Services/repos/authRepo.dart';
-import 'package:project1/Services/repos/user_repo.dart';
-import 'package:project1/core/utils/show_snack_bar.dart';
 import 'package:project1/features/authentication/presentation/views/authModel.dart';
-import 'package:project1/features/home/presentation/views/home_page.dart';
+import 'package:project1/features/home/presentation/manager/app%20cubit/app_cubit.dart';
 import '../../../../../../core/widgets/custom_button.dart';
 import '../../../../data/models/user details model/user_details.dart';
 import 'custom_add_image.dart';
@@ -55,7 +54,7 @@ class _EditAccountViewBodyState extends State<EditAccountViewBody> {
             const EditAccountAppbar(),
             const Gap(40),
             CustomAddImage(
-              imageUrl: widget.user.email ?? '',
+              imageUrl: widget.user.email,
               onPressed: () {},
             ),
             const Gap(
@@ -74,19 +73,14 @@ class _EditAccountViewBodyState extends State<EditAccountViewBody> {
               duration: const Duration(milliseconds: 300),
               child: CustomActionButton(
                   buttonText: 'Update',
-                  onTap: () async {
-                    try {
-                      AuthApi.currentUser = await UserRepo().updateProfile(
-                          user: User(
-                              id: AuthApi.currentUser.id,
-                              name: nameController.text,
-                              email: emailController.text,
-                              password: passwordController.text));
-
-                      Navigator.of(context).pop();
-                    } on Exception catch (e) {
-                      showSnackBar(text: 'Error Updating', context: context);
-                    }
+                  onTap: () {
+                    context.read<AppCubit>().updateUserData(
+                        user: User(
+                            id: AuthApi.currentUser.id,
+                            name: nameController.text,
+                            email: emailController.text,
+                            password: passwordController.text));
+                    Navigator.of(context).pop();
                   }),
             ),
             const Gap(20)

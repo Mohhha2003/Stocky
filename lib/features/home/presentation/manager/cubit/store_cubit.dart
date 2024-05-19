@@ -9,7 +9,7 @@ part 'store_state.dart';
 
 class StoreCubit extends Cubit<StoreState> {
   StoreCubit(this.productRepo) : super(StoreInitial()) {
-    getUserProduct();
+    getProducts();
   }
 
   final ProductRepo productRepo;
@@ -18,7 +18,8 @@ class StoreCubit extends Cubit<StoreState> {
   String gender = '';
   late User appUser;
 
-  void getUserProduct() async {
+  void getProducts() async {
+    prodcuts.clear();
     emit(StoreLoading());
     try {
       final response = await productRepo.getAllProducts();
@@ -49,5 +50,4 @@ class StoreCubit extends Cubit<StoreState> {
       emit(StoreFailed());
     }
   }
-
 }

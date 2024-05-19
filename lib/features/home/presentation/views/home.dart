@@ -22,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late final ProductRepo apiCon;
   @override
   void initState() {
+    context.read<StoreCubit>().getProducts();
     apiCon = ProductRepo();
     super.initState();
   }
@@ -200,8 +201,6 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class CustomPriceRow extends StatefulWidget {
-  final int price;
-
   CustomPriceRow({
     Key? key,
     required this.price,
@@ -209,9 +208,11 @@ class CustomPriceRow extends StatefulWidget {
     required this.product,
     required this.isFav,
   }) : super(key: key);
-  bool isFav;
   final String productId;
   final ProductModel product;
+  final int price;
+
+  bool isFav;
 
   @override
   State<CustomPriceRow> createState() => _CustomPriceRowState();
@@ -239,9 +240,8 @@ class _CustomPriceRowState extends State<CustomPriceRow> {
                     product: Favourites().fromProductModelToFavouritesModel(
                         productModel: widget.product));
                 showSnackBar(text: 'Removed From Fav', context: context);
-                AuthApi.favourites.remove(Favourites()
-                    .fromProductModelToFavouritesModel(
-                        productModel: widget.product));
+                AuthApi.favourites
+                    .removeWhere((fav) => fav.id == widget.product.id);
                 widget.isFav = false;
               } on Exception catch (e) {
                 showSnackBar(text: 'Error Removing to Fav', context: context);
@@ -253,10 +253,10 @@ class _CustomPriceRowState extends State<CustomPriceRow> {
                     text: 'Added To Fav',
                     context: context,
                     backgroundColor: Colors.green);
-                widget.isFav = true;
                 AuthApi.favourites.add(Favourites()
                     .fromProductModelToFavouritesModel(
                         productModel: widget.product));
+                widget.isFav = true;
               } on Exception catch (e) {
                 showSnackBar(text: 'Error Adding to Fav', context: context);
               }
@@ -278,7 +278,6 @@ class _CustomPriceRowState extends State<CustomPriceRow> {
 bool isProductFav({required String productId}) {
   for (var fav in AuthApi.favourites) {
     if (fav.productId == productId) {
-      print(fav.id);
       return true;
     }
   }

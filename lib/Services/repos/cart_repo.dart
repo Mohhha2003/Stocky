@@ -36,7 +36,7 @@ class CartRepo {
 
   addToCart({required ProductModel product}) async {
     Map<String, dynamic> productMap = product.toJson();
-    productMap['ownerId'] = AuthApi.currentUser.id!;
+    productMap['ownerId'] = AuthApi.currentUser.id ?? '';
     try {
       Response response = await dio
           .post('${ApiConstant.basseUrl}${ApiConstant.cart}', data: productMap);
