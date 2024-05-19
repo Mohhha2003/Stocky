@@ -54,12 +54,16 @@ class CustomProductListItem extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                Text(
-                  45.toString(),
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(color: Colors.orange),
+                Row(
+                  children: [
+                    Text(
+                      45.toString(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(color: Colors.orange),
+                    ),
+                  ],
                 ),
               ],
             ),

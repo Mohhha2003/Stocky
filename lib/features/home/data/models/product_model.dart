@@ -7,9 +7,11 @@ class ProductModel {
   late final String gender;
   late final String ownerId;
   late final String id;
+  final int? quantity;
 
   ProductModel(
       {required this.image,
+      this.quantity,
       required this.id,
       required this.name,
       required this.category,
