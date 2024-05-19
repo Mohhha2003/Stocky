@@ -25,7 +25,7 @@ class ProductRepo {
     }
   }
 
- Future<List<ProductModel>>  getProductWithCateogire(
+  Future<List<ProductModel>> getProductWithCateogire(
       {required String categorie, required String gender}) async {
     try {
       final response = await dio.get(
@@ -39,7 +39,7 @@ class ProductRepo {
     }
   }
 
- Future<List<ProductModel>> saerchProducts({required String keyword}) async {
+  Future<List<ProductModel>> saerchProducts({required String keyword}) async {
     try {
       final response = await dio.get(
           '${ApiConstant.basseUrl}${ApiConstant.search}',

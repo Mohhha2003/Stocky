@@ -8,4 +8,7 @@ class ApiConstant {
   static String updateProfile = '/api/user';
   static String catgorie = '/api/category/';
   static String search = '/api/products/search';
+  static String userOrders = '/api/orders/user';
+  static String orders = '/api/orders';
+  static String deletUserCart = '/api/cart/deleteAll';
 }

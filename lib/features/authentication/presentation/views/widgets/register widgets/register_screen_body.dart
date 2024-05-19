@@ -102,13 +102,12 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                       if (formKey.currentState!.validate()) {
                         final user = User(
                           name: nameController.text,
-                          email: emailController.text,
+                          email: emailController.text,  
                           password: passController.text,
                           image: 'afjdslkf',
                         );
                         await AuthApi().registerUser(user: user);
 
-                        print('User registered: ${user.email}');
                         GoRouter.of(context)
                             .pushReplacement(AppRoutes.homeView);
                       }

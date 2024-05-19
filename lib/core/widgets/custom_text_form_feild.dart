@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatelessWidget {
-   CustomTextFormField({
+  CustomTextFormField({
     super.key,
     this.formFieldKey,
     required this.isPassword,

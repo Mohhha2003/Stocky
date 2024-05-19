@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project1/features/home/presentation/views/home_page.dart';
+import 'package:project1/features/home/presentation/views/bottom_nav_bar.dart';
 import '../../features/authentication/presentation/views/login_screen.dart';
 import '../../features/authentication/presentation/views/register_screen.dart';
 import '../../features/onBoarding/presentation/view/screens/onboarding_view.dart';

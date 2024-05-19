@@ -21,7 +21,7 @@ class UserDetailsListTile extends StatelessWidget {
           child: cachedProfilNetworkImage(
               imageUrl: user.email, height: 64, width: 64),
         ),
-        title: CustomUserName (
+        title: CustomUserName(
           user: user,
         ),
         subtitle: Text(

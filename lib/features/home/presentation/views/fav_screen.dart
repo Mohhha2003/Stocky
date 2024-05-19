@@ -4,6 +4,8 @@ import 'package:project1/Services/repos/fav_repo.dart';
 import 'package:project1/core/utils/show_snack_bar.dart';
 import 'package:project1/features/home/data/models/favourites/favourites.dart';
 import 'package:project1/features/home/presentation/views/widgets/custom_product_list_item.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:project1/features/home/presentation/views/widgets/empty_widget.dart';
 
 class FavScreen extends StatelessWidget {
   const FavScreen({super.key});
@@ -23,6 +25,11 @@ class FavScreen extends StatelessWidget {
           );
         } else {
           List<Favourites> products = snapshot.data ?? [];
+          if (products.isEmpty) {
+            return const EmptyWidget(
+                svgImagePath: 'assets/images/fav.svg',
+                text: 'No Favourites was found');
+          }
           return AuthApi.currentUser.id == null
               ? const Center(
                   child: Text('Please Login To Add Favourites'),
@@ -40,7 +47,6 @@ class FavScreen extends StatelessWidget {
                         try {
                           await Fav().deleteFavourite(product: products[index]);
                           AuthApi.favourites.removeAt(index);
-                          
                         } on Exception catch (e) {
                           showSnackBar(
                               text: 'Failed To delete Product From Fav',

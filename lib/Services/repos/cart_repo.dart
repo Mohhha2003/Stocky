@@ -47,9 +47,7 @@ class CartRepo {
     }
   }
 
-  
-
-  Future<bool> deleteFavourite({required CartModel product}) async {
+  Future<bool> deleteFromCart({required CartModel product}) async {
     print('Joined the delete');
     try {
       Response response = await dio.delete(
@@ -60,6 +58,17 @@ class CartRepo {
     } on DioException catch (e) {
       print('The error in fav is $e');
       throw Exception(e.message);
+    }
+  }
+
+  Future<void> clearUserCart() async {
+    try {
+      final response = await dio.delete(
+          '${ApiConstant.basseUrl}${ApiConstant.deletUserCart}',
+          data: {"ownerId": AuthApi.currentUser.id});
+      print(response.data);
+    } on DioException catch (e) {
+      throw Exception(e.error);
     }
   }
 }

@@ -12,6 +12,3 @@ final class StoreSuccess extends StoreState {}
 final class StoreFailed extends StoreState {}
 
 final class StoreEmpty extends StoreState {}
-
-
-

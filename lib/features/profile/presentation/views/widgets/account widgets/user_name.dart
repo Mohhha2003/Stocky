@@ -22,18 +22,18 @@ class CustomUserName extends StatelessWidget {
           style: const TextStyle(
               fontSize: 20, color: Color(AppColors.kPrimaryColor)),
         ),
-                  AuthApi.currentUser.id != null ?
-
-        IconButton(
-          onPressed: () {
-            GoRouter.of(context).push(AppRoutes.editAccountView);
-          },
-          icon: const Icon(
-            Icons.mode_edit_outlined,
-            size: 15,
-            color: Color(AppColors.kPrimaryColor),
-          ),
-        ) : const SizedBox(),
+        AuthApi.currentUser.id != null
+            ? IconButton(
+                onPressed: () {
+                  GoRouter.of(context).push(AppRoutes.editAccountView);
+                },
+                icon: const Icon(
+                  Icons.mode_edit_outlined,
+                  size: 15,
+                  color: Color(AppColors.kPrimaryColor),
+                ),
+              )
+            : const SizedBox(),
       ],
     );
   }
