@@ -122,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     height: 150,
                                     width: double.infinity,
                                     child: Image.network(
-                                      '',
+                                      product.image,
                                       loadingBuilder:
                                           (context, child, loadingProgress) {
                                         if (loadingProgress == null) {

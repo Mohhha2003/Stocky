@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
+import 'package:project1/Services/repos/authRepo.dart';
+import 'package:project1/Services/store_repo.dart';
+import 'package:project1/features/home/data/models/order/product.dart';
 import 'package:project1/features/home/presentation/manager/app%20cubit/app_cubit.dart';
 import 'package:project1/features/home/presentation/views/search.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,7 +23,7 @@ class _BottomNavBarPageState extends State<BottomNavBarPage> {
   String _category = '';
   String _gender = '';
   double _price = 0.0;
-  XFile? _image;
+  File? _image;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +38,8 @@ class _BottomNavBarPageState extends State<BottomNavBarPage> {
                 onPressed: () async {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const SearchScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const SearchScreen()),
                   );
                 },
                 icon: const Icon(IconlyBroken.search),
@@ -50,19 +54,23 @@ class _BottomNavBarPageState extends State<BottomNavBarPage> {
             iconSize: 25,
             selectedItemColor: Colors.orange,
             items: const [
-              BottomNavigationBarItem(icon: Icon(IconlyBroken.home), label: "*"),
+              BottomNavigationBarItem(
+                  icon: Icon(IconlyBroken.home), label: "*"),
               BottomNavigationBarItem(icon: Icon(IconlyBroken.buy), label: "*"),
-              BottomNavigationBarItem(icon: Icon(IconlyBroken.heart), label: "*"),
-              BottomNavigationBarItem(icon: Icon(IconlyBroken.profile), label: "*"),
+              BottomNavigationBarItem(
+                  icon: Icon(IconlyBroken.heart), label: "*"),
+              BottomNavigationBarItem(
+                  icon: Icon(IconlyBroken.profile), label: "*"),
             ],
           ),
-          body: AppCubit.get(context).screen[AppCubit.get(context).currentIndex],
+          body:
+              AppCubit.get(context).screen[AppCubit.get(context).currentIndex],
           floatingActionButton: AppCubit.get(context).currentIndex == 0
               ? FloatingActionButton(
-            onPressed: _showAddProductDialog,
-            child: const Icon(Icons.add),
-            backgroundColor: Colors.orange,
-          )
+                  onPressed: _showAddProductDialog,
+                  backgroundColor: Colors.orange,
+                  child: const Icon(Icons.add),
+                )
               : null,
         );
       },
@@ -148,7 +156,7 @@ class _BottomNavBarPageState extends State<BottomNavBarPage> {
                   ElevatedButton(
                     onPressed: _pickImage,
                     child: const Text(
-                        'Pick Image',
+                      'Pick Image',
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
@@ -175,15 +183,13 @@ class _BottomNavBarPageState extends State<BottomNavBarPage> {
   }
 
   void _pickImage() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? pickedImage = await picker.pickImage(source: ImageSource.gallery);
-
+    File? image = await ProductRepo().pickImage();
     setState(() {
-      _image = pickedImage;
+      _image = image;
     });
   }
 
-  void _submitForm() {
+  void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
@@ -195,6 +201,15 @@ class _BottomNavBarPageState extends State<BottomNavBarPage> {
       if (_image != null) {
         print('Image path: ${_image!.path}');
       }
+
+      await ProductRepo().addProduct(
+          name: _name,
+          description: _description,
+          category: _category,
+          gender: _gender,
+          price: _price,
+          ownerId: AuthApi.currentUser.id ?? '',
+          image: _image!);
 
       Navigator.of(context).pop();
     }
