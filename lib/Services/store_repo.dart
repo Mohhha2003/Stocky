@@ -29,14 +29,17 @@ class ProductRepo {
 
   Future<List<ProductModel>> getProductWithCateogire(
       {required String categorie, required String gender}) async {
+    print('in the Api call');
     try {
       final response = await dio.get(
           '${ApiConstant.basseUrl}${ApiConstant.catgorie}',
           data: {"gender": gender, "category": categorie});
+      print("The response is ${response.data}");
       return List<ProductModel>.from(
         response.data.map((e) => ProductModel.fromJson(e)),
       );
     } on DioException catch (e) {
+      print('Error');
       throw Exception(e.error);
     }
   }
@@ -64,11 +67,13 @@ class ProductRepo {
     required File image,
   }) async {
     try {
+      // Check if the file has a valid extension
       String fileName = image.path.split('/').last;
       if (!fileName.toLowerCase().endsWith('.jpg') &&
           !fileName.toLowerCase().endsWith('.png') &&
           !fileName.toLowerCase().endsWith('.jpeg')) {
-         
+        print(
+            'Invalid file format. Please select an image with a .jpg, .png, or .jpeg extension.');
         return;
       }
 

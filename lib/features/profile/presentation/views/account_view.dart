@@ -21,7 +21,7 @@ class _AccountViewState extends State<AccountView> {
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppStates>(
       builder: (context, state) {
-        return AccountViewBody(
+        return AccountViewBody( 
           user: UserDetailsModel(
               email: AuthApi.currentUser.email,
               name: AuthApi.currentUser.name,

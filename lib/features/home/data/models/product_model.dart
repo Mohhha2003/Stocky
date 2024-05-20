@@ -22,7 +22,7 @@ class ProductModel {
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
         id: json['_id'],
-        image: json['image'],
+        image: json['image'].toString().replaceFirst('10.0.2.2', '192.168.1.6'),
         name: json['name'],
         category: json['category'],
         description: json['description'],

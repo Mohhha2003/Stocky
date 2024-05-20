@@ -35,6 +35,7 @@ class StoreCubit extends Cubit<StoreState> {
   }
 
   void getPorductCategorie() async {
+    print('Goning in the cubit');
     prodcuts.clear();
     emit(StoreLoading());
     try {

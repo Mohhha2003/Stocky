@@ -48,7 +48,6 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: (p0) {
                 context.read<StoreCubit>().categorie = p0;
                 context.read<StoreCubit>().getPorductCategorie();
-                print(p0);
               },
               categories: const [
                 "Bags",
@@ -99,6 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemBuilder: (context, index) {
                       ProductModel product =
                           context.read<StoreCubit>().prodcuts[index];
+                      print('The image path is ${product.image}');
                       bool isProduct = isProductFav(productId: product.id);
                       return InkWell(
                         onTap: () {

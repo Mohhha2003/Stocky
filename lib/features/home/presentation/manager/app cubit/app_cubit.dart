@@ -21,6 +21,7 @@ class AppCubit extends Cubit<AppStates> {
   void updateUserData({required User user}) async {
     try {
       AuthApi.currentUser = await UserRepo().updateProfile(user: user);
+      print('Updated done');
       emit(AppUpdated());
     } on Exception catch (e) {
       emit(UpdateFailed());

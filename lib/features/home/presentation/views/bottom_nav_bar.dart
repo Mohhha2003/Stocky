@@ -3,10 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
 import 'package:project1/Services/repos/authRepo.dart';
 import 'package:project1/Services/store_repo.dart';
-import 'package:project1/features/home/data/models/order/product.dart';
 import 'package:project1/features/home/presentation/manager/app%20cubit/app_cubit.dart';
 import 'package:project1/features/home/presentation/views/search.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class BottomNavBarPage extends StatefulWidget {
